@@ -36,7 +36,7 @@ del pixObj
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.exit()
+            pygame.quit()
             sys.exit()
 
     pygame.display.update()
