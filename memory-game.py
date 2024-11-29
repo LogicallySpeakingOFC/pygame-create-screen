@@ -53,3 +53,23 @@ OVAL = 'oval'
 ALLCOLORS = (RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, CYAN)
 ALLSHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 assert len(ALLCOLORS) * len(ALLSHAPES) * 2 >= BOARDWIDTH * BOARDHEIGHT, "Board is too big for the number of shapes/colors defined."
+
+
+def main():
+
+    # Declare FPSCLOCK and DISPLAYSURF as global variables
+    global FPSCLOCK, DISPLAYSURF
+
+    # Initialize pygame
+    pygame.init()
+
+    # Set values of FPSCLOCK and DISPLAYSURF
+    FPSCLOCK = pygame.time.Clock()
+    DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+
+    # Initialize mousex and mousey to store mouse coordinates
+    mousex = 0
+    mousey = 0
+
+    # Set window caption
+    pygame.display.set_caption('Memory Game')
