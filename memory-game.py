@@ -73,3 +73,48 @@ def main():
 
     # Set window caption
     pygame.display.set_caption('Memory Game')
+
+    # Setup mainboard and boxes
+    mainBoard = getRandomizedBoard()
+    revealedBoxes = generateRevealedBoxesData(False)
+
+
+def getRandomizedBoard():
+    """Get a list of every possible shape in every possible color"""
+
+    icons = []
+
+    for color in ALLCOLORS:
+        for shape in ALLSHAPES:
+            icons.append((shape, color))
+
+    # Randomize the order of the icons list
+    random.shuffle(icons)
+
+    # Calculate how many icons are needed
+    numIconsUsed = int(BOARDWIDTH * BOARDHEIGHT / 2)
+
+    # Make two of each
+    icons = icons[:numIconsUsed] * 2
+
+    # Randomize icons list
+    random.shuffle(icons)
+
+    # Create the board data structure with randomly placed icons
+    board = []
+
+    for x in range(BOARDWIDTH):
+        column = []
+        for y in range(BOARDHEIGHT):
+            column.append(icons[0])
+            del icons[0]
+        board.append(column)
+    return board
+
+
+def generateRevealedBoxesData(val):
+    revealedBoxes = []
+    
+    for i in range(BOARDWIDTH):
+        revealedBoxes.append([val] * BOARDHEIGHT)
+    return revealedBoxes
