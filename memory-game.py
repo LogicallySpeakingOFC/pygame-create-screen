@@ -137,7 +137,7 @@ def main():
                         pygame.time.wait(2000)
 
                         mainBoard = getRandomizedBoard()
-                        revealedBoxes = generateRevealBoxesData(False)
+                        revealedBoxes = generateRevealedBoxesData(False)
 
                         drawBoard(mainBoard, revealedBoxes)
                         pygame.display.update()
@@ -268,3 +268,68 @@ def drawBoxCovers(board, boxes, coverage):
 
     pygame.display.update()
     FPSCLOCK.tick(FPS)
+
+
+def revealBoxesAnimation(board, boxesToReveal):
+    for coverage in range(BOXSIZE, (-REVEALSPEED) - 1, - REVEALSPEED):
+        drawBoxCovers(board, boxesToReveal, coverage)
+
+
+def coverBoxesAnimation(board, boxesToCover):
+    for coverage in range(0, BOXSIZE + REVEALSPEED, REVEALSPEED):
+        drawBoxCovers(board, boxesToCover, coverage)
+
+
+def drawBoard(board, revealed):
+    for boxx in range(BOARDWIDTH):
+        for boxy in range(BOARDHEIGHT):
+            left, top = leftTopCoordsOfBox(boxx, boxy)
+            if not revealed[boxx][boxy]:
+                pygame.draw.rect(DISPLAYSURF, BOXCOLOR, (left, top, BOXSIZE, BOXSIZE))
+            else:
+                shape, color = getShapeAndColor(board, boxx, boxy)
+                drawIcon(shape, color, boxx, boxy)
+
+
+def drawHighlightBox(boxx, boxy):
+    left, top = leftTopCoordsOfBox(boxx, boxy)
+    pygame.draw.rect(DISPLAYSURF, HIGHLIGHTCOLOR, (left - 5, top - 5, BOXSIZE + 10, BOXSIZE + 10), 4)
+
+
+def startGameAnimation(board):
+    coveredBoxes = generateRevealedBoxesData(False)
+    boxes = []
+    for x in range(BOARDWIDTH):
+        for y in range(BOARDHEIGHT):
+            boxes.append((x, y))
+    random.shuffle(boxes)
+    boxGroups = splitIntoGroupsOf(8, boxes)
+
+    drawBoard(board, coveredBoxes)
+    for boxGroup in boxGroups:
+        revealBoxesAnimation(board, boxGroup)
+        coverBoxesAnimation(board, boxGroup)
+
+
+def gameWonAnimation(board):
+    coveredBoxes = generateRevealedBoxesData(True)
+    color1 = LIGHTBGCOLOR
+    color2 = BGCOLOR
+
+    for i in range(13):
+        color1, color2 = color2, color1
+        DISPLAYSURF.fill(color1)
+        drawBoard(board, coveredBoxes)
+        pygame.display.update()
+        pygame.time.wait(300)
+
+
+def hasWon(revealedBoxes):
+    for i in revealedBoxes:
+        if False in i:
+            return False
+    return True
+
+
+if __name__ == '__main__':
+    main()
