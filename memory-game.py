@@ -90,8 +90,7 @@ def main():
     # Main game loop
     while True:
 
-        # Declare variable for mouse clicks
-        mouseclicked = False
+        mouseClicked = False
 
         # Apply background color
         DISPLAYSURF.fill(BGCOLOR)
@@ -117,7 +116,7 @@ def main():
             # The mouse is currently over a box
             if not revealedBoxes[boxx][boxy]:
                 drawHighlightBox(boxx, boxy)
-            if not revealedBoxes[boxx][boxy] and mouseClicked:
+            if mouseClicked:
                 revealBoxesAnimation(mainBoard, [(boxx, boxy)])
                 revealedBoxes[boxx][boxy] = True
 
@@ -248,7 +247,7 @@ def drawIcon(shape, color, boxx, boxy):
     elif shape == LINES:
         for i in range(0, BOXSIZE, 4):
             pygame.draw.line(DISPLAYSURF, color, (left, top + i), (left + i, top))
-            pygame.draw.line(DISPLAYSURF, color, (left, top + i, top + BOXSIZE - 1), (left + BOXSIZE - 1, top + i))
+            pygame.draw.line(DISPLAYSURF, color, (left + i, top + BOXSIZE - 1), (left + BOXSIZE - 1, top + i))
     elif shape == OVAL:
         pygame.draw.ellipse(DISPLAYSURF, color, (left, top + quarter, BOXSIZE, half))
 
